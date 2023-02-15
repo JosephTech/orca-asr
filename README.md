@@ -1,0 +1,1 @@
+implement ASR using WeNet and ACE. Based on the ACE Reactor pattern. Implementation of the own protocol for socket long connection, http protocol, and websocket protocol support. Provide client and applet sample programs.
