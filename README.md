@@ -33,7 +33,9 @@ At this stage, this project relies on WeNet speech recognition engine. Entering 
 
 
 ## License
-
+---
+---
+---
 ## 介绍
 虎鲸ASR提供了开源的，全栈的，语音识别解决方案。它支持服务端模型部署，提供客户端示例程序。采用ACE网络中间件和wenet语音识别引擎，基于Reactor网络模式实现了高并发服务器架构。设计了简洁的网络协议以支持客户端tcp长连接，同时实现了对http协议和websocket协议的支持，兼容WeNet websocket协议。
 
