@@ -1,6 +1,12 @@
 # Orca-ASR 虎鲸-自动语音识别
 
-![Image text](https://github.com/JosephTech/orca-asr/blob/main/images/dance_orca.bmp)
+<div align=center>
+    <img width="256" height="256" src="https://github.com/JosephTech/orca-asr/blob/main/images/dance_orca.bmp"/>
+</div>
+<p align="center">the image is generate by AI.  
+ https://hotpot.ai </p>  
+
+
 
 ## Introduction
 Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support tcp long connection of clients, and the support of http protocol and websocket protocol is realized, compatible with wenet websocket protocol.
