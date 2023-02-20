@@ -1,3 +1,7 @@
+# Orca-ASR 虎鲸-自动语音识别
+
+![Image text](https://github.com/JosephTech/orca-asr/blob/main/images/dance_orca.bmp)
+
 ## Introduction
 Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support tcp long connection of clients, and the support of http protocol and websocket protocol is realized, compatible with wenet websocket protocol.
 
@@ -33,8 +37,12 @@ At this stage, this project relies on WeNet speech recognition engine. Entering 
 
 
 ## License
----
----
+
+
+
+
+
+
 ---
 ## 介绍
 虎鲸ASR提供了开源的，全栈的，语音识别解决方案。它支持服务端模型部署，提供客户端示例程序。采用ACE网络中间件和wenet语音识别引擎，基于Reactor网络模式实现了高并发服务器架构。设计了简洁的网络协议以支持客户端tcp长连接，同时实现了对http协议和websocket协议的支持，兼容WeNet websocket协议。
