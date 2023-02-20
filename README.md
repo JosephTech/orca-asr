@@ -25,8 +25,22 @@ Orca ASR provides open source, full stack, speech recognition solutions. It supp
 
 
 ## Run with Local Build
-At this stage, this project relies on WeNet speech recognition engine. Entering this branch, [wenet-ace-socket](https://github.com/JosephTech/wenet-ace-socket), you can build and run.
-
+At present, this project relies on WeNet speech recognition engine. Entering this branch, [wenet-ace-socket](https://github.com/JosephTech/wenet-ace-socket), you can build and run.
+1. Enter [Folder](https://github.com/JosephTech/wenet-ace-socket/tree/main/runtime/libtorch)
+2. Build  
+   `mkdir build && cd build && cmake .. && cmake --build .`
+3. Run  
+    cd ./build/bin/
+```
+    export GLOG_logtostderr=1
+    export GLOG_v=2
+    model_dir="/root/Model/20210815_unified_conformer_libtorch"
+    ./ace_socket_server_main \
+    --port 10010 \
+    --chunk_size 16 \
+    --model_path $model_dir/final.zip \
+    --unit_path $model_dir/units.txt 2>&1 | tee server.log
+```
 
 ## Release
 
@@ -71,7 +85,7 @@ At this stage, this project relies on WeNet speech recognition engine. Entering 
 2. 构建  
    `mkdir build && cd build && cmake .. && cmake --build .`
 3. 运行  
-    进入build/bin/文件夹
+    cd ./build/bin
 ```
     export GLOG_logtostderr=1
     export GLOG_v=2
@@ -82,12 +96,14 @@ At this stage, this project relies on WeNet speech recognition engine. Entering 
     --model_path $model_dir/final.zip \
     --unit_path $model_dir/units.txt 2>&1 | tee server.log
 ```
-
-## 发布
-
 ## 客户端
 
 ## Web端
+
+## 多端协同显示
+
+## 发布
+
 
 ## TODOs
 
