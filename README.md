@@ -45,6 +45,8 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
 ![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
 
 ## Web
+![web_demo](https://github.com/JosephTech/orca-asr/blob/main/images/web_demo.gif)
+
 
 
 ## Release
@@ -103,6 +105,8 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
 ![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
 
 ## Web端
+
+![web_demo](https://github.com/JosephTech/orca-asr/blob/main/images/web_demo.gif)
 
 ## 多端协同显示
 
