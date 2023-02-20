@@ -21,7 +21,7 @@ Orca ASR provides open source, full stack, speech recognition solutions. It supp
 2. Carefully designed to achieve high concurrency and non-blocking server.
 3. Designed simple network protocol to support client TCP long connection.
 4. The support for our own protocol, http protocol and websocket protocol is realized by using state design pattern. With only one server deployed, multiple types of clients highly concurrent/non-blocking connections can be supported.
-5. The Group function allows one client to enter a voice and multiple clients to display the recognition result synchronously. It is suitable for large conferences with poor sound effect and network meeting for the hearing impaired.
+5. The Group function allows one client to enter a voice and multiple clients to display the recognition result synchronously. It is suitable for large meetings where the sound effect of the recorder is poor, the network meeting of the hearing impaired, and the computer has no microphone.
 
 
 ## Run with Local Build
@@ -45,22 +45,25 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
 ![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
 
 ## Web
+Web is a slightly modified version of WeNet.   
 ![web_demo](https://github.com/JosephTech/orca-asr/blob/main/images/web_demo.gif)
 
+## Multi-Terminal Synchronous Display
 
-
-## Release
-
-
-
-
+![multi_terminal](https://github.com/JosephTech/orca-asr/blob/main/images/multi_terminal_demo.gif)
 
 ## TODOs
+1. Improve HTTP support.
+2. Improve the support for WebSocket protocol.
+3. Change to smart pointer.
+4. Add a small program demo.
 
 
 ## Final Project Goal
-
-
+1. Access ChatGPT.
+2. Access TTS system.
+3. Become the metaverse NPC server and the robot question answering system server.
+4. The virtual and the real meet in this way.
 
 ## License
 
@@ -80,7 +83,7 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
 2. 精心设计实现了高并发和非阻塞服务器。
 3. 设计简洁的网络协议,支持客户端TCP长连接.
 4. 采用状态设计模式实现了对自有协议，http协议和websocket协议的支持。只需部署一个服务器，即可支持多种客户端高并发/非阻塞连接。
-5. Group功能支持一个客户端输入语音，多客户端同步显示识别结果。适用于大型会议录音笔收音效果不佳，听障人士网络会议等场景。
+5. Group功能支持一个客户端输入语音，多客户端同步显示识别结果。适用于大型会议录音笔收音效果不佳，听障人士网络会议，电脑没有麦克风等场景。
 
 ## 本地构建运行
 现阶段本项目依赖于WeNet语音识别引擎，进入此分支，[wenet-ace-socket](https://github.com/JosephTech/wenet-ace-socket)，即可构建运行。
@@ -105,14 +108,21 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
 ![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
 
 ## Web端
-
+Web端是在WeNet的基础上稍作修改  
 ![web_demo](https://github.com/JosephTech/orca-asr/blob/main/images/web_demo.gif)
 
-## 多端协同显示
-
-## 发布
+## 多端协同  
+![multi_terminal](https://github.com/JosephTech/orca-asr/blob/main/images/multi_terminal_demo.gif)
 
 
 ## TODOs
+1. 完善对HTTP协议的支持
+2. 完善对WebSocket协议的支持
+3. 改为智能指针
+4. 添加小程序demo
 
 ## 项目最终目标
+1. 接入ChatGPT
+2. 接入语音合成系统
+3. 成为元宇宙NPC服务器，同时成为机器人问答系统服务器
+4. 虚拟和现实以此种方式交汇
