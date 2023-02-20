@@ -13,6 +13,8 @@ Orca ASR provides open source, full stack, speech recognition solutions. It supp
 
 ## Class Diagram
 
+![class image](https://github.com/JosephTech/orca-asr/blob/main/images/dance_orca.bmp)
+
 
 ## Features
 1. Pure c++ server to ensure that the server can run with high performance and stability.
