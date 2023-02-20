@@ -67,7 +67,7 @@ public:
     // OnPcmData() = default;
     OnTcpReady(ProtocolHub* ph):protocol_hub_(ph){}
     ~OnTcpReady(){}
-    void Enter(const std::string& buffer){};
+    void Enter(const std::string& remain_buf);
     void Execute(const std::string& buffer);
     void Exit(){};
     ConnectionState get_hub_state_(){return kOnTcpReady;}

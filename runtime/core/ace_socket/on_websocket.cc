@@ -24,6 +24,7 @@ namespace json = boost::json;
 
 void OnWebSocket::Enter(const std::string& buffer)
 {
+    PLOG(INFO) << "TOOD(Joseph): 处理websocket 协议fin为0的情况";
     RequestHttp rh = protocol_hub_->get_request_http_();
     PLOG(INFO) << "TODO(Joseph): 此处需计算base64(sha1(websocket_key + .....))";
     // 258EAFA5-E914-47DA-95CA-C5AB0DC85B11
@@ -82,61 +83,61 @@ void OnWebSocket::Enter(const std::string& buffer)
     // {
     //     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     // }
-
-    PLOG(INFO) << "发送成功" ;
-
 }
 
 void OnWebSocket::Execute(const std::string& buf)
 {
     // all buffer is raw pcm data.
     // pcm_processor_->Execute(buffer);
-    string buffer = remain_buffer_ + buf;
+    remain_buffer_ += buf;
     //PLOG(INFO) << "TODO(Joseph): wrapping websocket code ";
-    WebSocketProtocol frame;
-    int ret = ParseFrame(buffer, frame);
-    if(buffer.length() > ret)
+    bool flag = true;
+    while(flag)
     {
-        PLOG(INFO) << "剩余有" << buffer.length() - ret;
-        remain_buffer_ = buffer.substr(ret);
-    }
-    else
-    {
-        remain_buffer_ = "";
-    }
+        WebSocketProtocol frame;
+        int ret = ParseFrame(remain_buffer_, frame);
+        if(remain_buffer_.length() > ret)
+        {
+            PLOG(INFO) << "剩余有" << remain_buffer_.length() - ret;
+            remain_buffer_ = remain_buffer_.substr(ret);
+        }
+        else
+        {
+            flag = false;
+            remain_buffer_ = "";
+        }
 
-    //PLOG(INFO) << "fin is "<< (int)frame.fin;
-    // PLOG(INFO) << "opcode is " << (int)frame.opcode
-    PLOG(INFO) << "TOOD(Joseph): 处理fin为0的情况";
-    switch(frame.opcode)
-    {
-    case 0x0:
-        // continuation frame
-        break;
-    case 0x1:
-        // text frame
-        PLOG(INFO) << "TODO(Joseph): process websocket start signal";
-        ProcessTextPayload(frame.payload);
-        break;
-    case 0x2:
-        // binary frame
-        //ProcessBinaryPayload();
-        //PLOG(INFO) << "websocket receive pcm data: " << frame.payload; 
-        //PLOG(INFO) << "TODO(Joseph): process websocket pcm data";
-        pcm_processor_->Execute(frame.payload);
-        break;
-    case 0x8:
-        // connection close
-        protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
-        break;
-    case 0x9:
-        // ping frame
-        break;
-    case 0xA:
-        // pong frame
-        break;
+        //PLOG(INFO) << "fin is "<< (int)frame.fin;
+        // PLOG(INFO) << "opcode is " << (int)frame.opcode
+        switch(frame.opcode)
+        {
+        case 0x0:
+            // continuation frame
+            break;
+        case 0x1:
+            // text frame
+            PLOG(INFO) << "TODO(Joseph): process websocket start signal";
+            ProcessTextPayload(frame.payload);
+            break;
+        case 0x2:
+            // binary frame
+            //ProcessBinaryPayload();
+            //PLOG(INFO) << "websocket receive pcm data: " << frame.payload; 
+            //PLOG(INFO) << "TODO(Joseph): process websocket pcm data";
+            pcm_processor_->Execute(frame.payload);
+            break;
+        case 0x8:
+            // connection close
+            protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
+            break;
+        case 0x9:
+            // ping frame
+            break;
+        case 0xA:
+            // pong frame
+            break;
+        }
     }
-    
 }
 
 int OnWebSocket::SendText(const std::string& text)
@@ -154,8 +155,8 @@ int OnWebSocket::PackFrame(bool fin, bool mask, uint8_t opcode, string payload, 
 {
     PLOG(INFO) << "TODO(Joseph) apply mask";
     result_frame = "";
-    PLOG(INFO) << "payload is" << payload;
-    PLOG(INFO) << "payload_len is" << payload.length();
+    // PLOG(INFO) << "payload is" << payload;
+    // PLOG(INFO) << "payload_len is" << payload.length();
     uint32_t payload_len = payload.length();
     uint8_t m_bit = 0x80;
 
@@ -185,8 +186,8 @@ int OnWebSocket::PackFrame(bool fin, bool mask, uint8_t opcode, string payload, 
             buf[1] = (uint8_t)payload_len;
         }
         
-        PLOG(INFO) << "buf[0] is" << (int)buf[0];
-        PLOG(INFO) << "buf[1] is" << (int)buf[1];
+        // PLOG(INFO) << "buf[0] is" << (int)buf[0];
+        // PLOG(INFO) << "buf[1] is" << (int)buf[1];
         for(int i = 0; i < 2; ++i)
         {
             result_frame += (char)buf[i];
@@ -284,17 +285,17 @@ int OnWebSocket::PackFrame(bool fin, bool mask, uint8_t opcode, string payload, 
 
         result_frame.append(payload);
     }
-    PLOG(INFO) << "result_frame .length is " << result_frame.length();
-    for(int i = 0; i < 2; ++i)
-    {
-        unsigned char ch = result_frame.c_str()[i];
-        int b[8];
-        for(int j = 7; j >= 0; --j)
-        {
-            b[j] = ((ch >> j) & 1);
-            PLOG(INFO) << "send websocket head is" << b[j];
-        }
-    }
+    // PLOG(INFO) << "result_frame .length is " << result_frame.length();
+    // for(int i = 0; i < 2; ++i)
+    // {
+    //     unsigned char ch = result_frame.c_str()[i];
+    //     int b[8];
+    //     for(int j = 7; j >= 0; --j)
+    //     {
+    //         b[j] = ((ch >> j) & 1);
+    //         PLOG(INFO) << "send websocket head is" << b[j];
+    //     }
+    // }
     
 
     return 0;
@@ -334,7 +335,7 @@ int OnWebSocket::ParseFrame(const std::string& buffer, WebSocketProtocol& frame)
     frame.opcode = static_cast<uint8_t>(buffer[index] & 0xf);
     index++;
     //PLOG(INFO) << "fin is "<< frame.fin;
-    PLOG(INFO) << "opcode is" << (int)frame.opcode;
+    //PLOG(INFO) << "opcode is" << (int)frame.opcode;
 
     frame.mask = static_cast<bool>((buffer[index] >> 7) & 0x1);
     uint8_t temp_payload_len = static_cast<uint8_t>(buffer[index] & 0x7f); 
@@ -376,7 +377,7 @@ int OnWebSocket::ParseFrame(const std::string& buffer, WebSocketProtocol& frame)
         index += 4;
         PLOG(INFO) << "127payload_len is" << frame.payload_len;
     }
-    PLOG(INFO) << "mask is " << frame.mask;
+    //PLOG(INFO) << "mask is " << frame.mask;
     if(0x1 == frame.mask)
     {
         memcpy(frame.masking_key, &buffer[index], 4);
@@ -387,6 +388,7 @@ int OnWebSocket::ParseFrame(const std::string& buffer, WebSocketProtocol& frame)
         // RFC 6455. must have mask.
         PLOG(ERROR) << "RFC 6455. websocket protocol error, message must have mask.";
         protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
+        return -1;
     }
 
     frame.payload = buffer.substr(index, frame.payload_len);
@@ -412,7 +414,7 @@ void OnWebSocket::ProcessTextPayload(const std::string& text)
         if("new_group" == signal)
         {
             GroupManager::Instance().JoinNewGroup(protocol_hub_->get_client_());
-            json::value rv = {"uuid", protocol_hub_->get_client_()->get_uuid_().c_str()};
+            json::value rv = {{"type", "uuid"},{"uuid", protocol_hub_->get_client_()->get_uuid_().c_str()}};
             std::string response = json::serialize(rv);
             SendText(response);
         }
@@ -426,23 +428,20 @@ void OnWebSocket::ProcessTextPayload(const std::string& text)
                 {
                     PLOG(ERROR) << "uuid not exist. close socket stream.";
                     protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
+                    return;
                 }
             }
             else
             {
                 PLOG(ERROR) << "wrong protocol. close socket stream.";
                 protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
+                return;
             }
         }
         else if("on_mic" == signal)
         {
             // on microphone. Grab the microphone.
-            int ret = protocol_hub_->get_client_()->get_group_()->set_current_on_microphone_(protocol_hub_->get_client_());
-            if(-1 == ret)
-            {
-                PLOG(ERROR) << "program logic error. client not in group. close socket stream.";
-                protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
-            }
+            protocol_hub_->get_client_()->get_group_()->SetGroupLeader(protocol_hub_->get_client_());
         }
         else if("start" == signal)
         {
@@ -476,6 +475,7 @@ void OnWebSocket::ProcessTextPayload(const std::string& text)
     {
         PLOG(INFO) << ("wrong protocol");
         protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
+        return;
     }
 
 }

@@ -11,8 +11,6 @@ int Recorder::SavePcmFile(const std::string& all_pcm_data)
 
     file.close();
     return 0;
-
-    return 0;
 }
 
 } // namespace wenet

@@ -78,6 +78,10 @@ public:
     bool is_on_websocket_(){return on_websocket_;}
     Participant* get_client_(){return client_;}
     HubState* get_hub_state_(){return hub_state_;}
+    void set_group_leader_(bool flag){group_leader_ = flag; }
+    bool is_group_leader_(){return group_leader_;}
+    bool is_hub_close_(){return hub_close_; }
+    OnWebSocket* get_on_websocket_state_(){return on_websocket_state_; }
 
     std::shared_ptr<FeaturePipeline>& get_feature_pipeline_(){return feature_pipeline_;}
     std::shared_ptr<std::thread>& get_decode_thread_(){return decode_thread_;}
@@ -88,7 +92,9 @@ public:
 private:
     bool on_socket_ = false;
     bool on_websocket_ = false;             // connection state.
+    bool group_leader_ = true;              // leader is on microphone that means only leader can speak while members and the leader receive decode result. 
     bool record_pcm_ = false;               // whether to save the pcm data.
+    bool hub_close_ = false;                // HandelClose() one time
 
     int64_t nbest_ = 1;
     bool continuous_decoding_ = false;

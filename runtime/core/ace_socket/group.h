@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 
+
 namespace wenet{
 
 class Participant;
@@ -14,15 +15,13 @@ class Participant;
 //
 class Group{
 public:
-    void Join(Participant* client);
-    int Leave(Participant* client);
+    void Join(Participant* cl);
+    int Leave(Participant* cl);
     void BroadcastMessage(const std::string& message);
     int Size(){return clients_.size(); }
-    int set_current_on_microphone_(Participant* pa);
-    Participant* get_current_on_microphone_(){return current_on_microphone_;}
+    int SetGroupLeader(Participant* pa);
 private:
-    std::vector<Participant*> clients_;
-    Participant* current_on_microphone_ = nullptr;          // which client use mic now.
+    std::set<Participant*> clients_;
 };
 
 //
@@ -31,10 +30,9 @@ private:
 class GroupManager{
 private:
     GroupManager(){
-        
     }
     ~GroupManager(){}
-    GroupManager(const GroupManager&);
+    // GroupManager(const GroupManager&);
     // GroupManager& operator=(const GroupManager&);
 public:
     static GroupManager& Instance(){

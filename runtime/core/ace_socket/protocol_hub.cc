@@ -40,6 +40,7 @@ ProtocolHub::ProtocolHub(Participant* client,
 
 ProtocolHub::~ProtocolHub()
 {
+    PLOG(INFO) << "hub_析构..";
     delete first_connect_state_;
     delete on_pcm_data_state_;
     delete on_tcp_ready_state_;
@@ -55,7 +56,7 @@ int ProtocolHub::ProcessRequest(const char* buf, ssize_t rev)
     std::string buffer(buf,rev);
 
     // 处理每次新的buffer，放在Execute, 切换状态时，上个状态剩余数据处理，放在->enter(中)
-    PLOG(INFO) << "hub_state_ is " << hub_state_->get_hub_state_();
+    //PLOG(INFO) << "hub_state_ is " << hub_state_->get_hub_state_();
     hub_state_->Execute(buffer);
 
     // TODO: 状态： on_pcm, 
@@ -220,15 +221,17 @@ void ProtocolHub::OnSpeechStart()
     // hub_state_ = on_pcm_data_state_;
     PLOG(INFO) << "TODO(Joseph):  ProtocolHub::OnSpeechStart()此处需join()线程\n";
     decode_thread_ = std::make_shared<std::thread>(&ProtocolHub::DecodeThreadFunc, this);
-  
 }
 
 void ProtocolHub::HandleClose()
 {
-    if (feature_pipeline_ && hub_state_->get_hub_state_() == kOnPcmData)
+    if(hub_close_) return;
+    // fix a bug. websocket state, receive end signal.
+    if (feature_pipeline_)
     {
-      feature_pipeline_->set_input_finished();
+        feature_pipeline_->set_input_finished();
     }
+    hub_close_ = true;
     ChangeHubState(kOnWaitResult, "");
 }
 
@@ -334,74 +337,60 @@ void ProtocolHub::DecodeThreadFunc()
 
 
 void ProtocolHub::OnPartialResult(const std::string& result) {
-    LOG(INFO) << "Partial result: " << result;
-    PLOG(INFO) << "TODO(Joseph): 此处需发送Partial识别结果";
+    //PLOG(INFO) << "Partial result: " << result;
+    //PLOG(INFO) << "TODO(Joseph): 此处需发送Partial识别结果";
     json::value rv = {
         {"status", "ok"}, {"type", "partial_result"}, {"nbest", result}};
     // ws_.text(true);
     // ws_.write(asio::buffer(json::serialize(rv)));
     std::string sendbuf = json::serialize(rv);
     sendbuf += "\r\n";
-    PLOG(INFO) << "send buf is " << sendbuf;
-    if(on_socket_)
+    //PLOG(INFO) << "send buf is " << sendbuf;
+    if(nullptr != client_->get_group_())
     {
-        
-        client_->socket().send(sendbuf.c_str(), sendbuf.length());
-    }
-    else if(on_websocket_ && hub_state_->get_hub_state_() == kOnWebSocket)
-    {
-        on_websocket_state_->SendText(sendbuf);
+        client_->get_group_()->BroadcastMessage(sendbuf);
     }
     
 }
 
 void ProtocolHub::OnFinalResult(const std::string& result) {
-    PLOG(INFO) << "Final result: " << result;
+    //PLOG(INFO) << "Final result: " << result;
     // PLOG(INFO) << "n best is " << nbest_;
     // PLOG(INFO) << "continuous_decoding_ is " << continuous_decoding_;
-    PLOG(INFO) << "TODO(Joseph): 此处需发送final识别结果";
+    //PLOG(INFO) << "TODO(Joseph): 此处需发送final识别结果";
     json::value rv = {{"status", "ok"}, {"type", "final_result"}, {"nbest", result}};
     //   ws_.text(true);
     //   ws_.write(asio::buffer(json::serialize(rv)));
     std::string sendbuf = json::serialize(rv);
     sendbuf += "\r\n";
 
-    PLOG(INFO) << "send buf is " << sendbuf;
-    if(on_socket_)
+    //PLOG(INFO) << "send buf is " << sendbuf;
+    if(nullptr != client_->get_group_())
     {
-        
-        client_->socket().send(sendbuf.c_str(), sendbuf.length());
-    }
-    else if(on_websocket_ && hub_state_->get_hub_state_() == kOnWebSocket)
-    {
-        on_websocket_state_->SendText(sendbuf);
+        client_->get_group_()->BroadcastMessage(sendbuf);
     }
 }
 
 void ProtocolHub::OnFinish() {
-    PLOG(INFO) << "TODO(Joseph): 此处需发送识别结束信号"; 
+    //PLOG(INFO) << "TODO(Joseph): 此处需发送识别结束信号"; 
     json::value rv = {{"status", "ok"}, {"type", "speech_end"}};
     // ws_.text(true);
     // ws_.write(asio::buffer(json::serialize(rv)));
     std::string sendbuf = json::serialize(rv);
     sendbuf += "\r\n";
 
-    PLOG(INFO) << "send buf is " << sendbuf;
+    client_->set_decode_thread_finish_();
+    //PLOG(INFO) << "send buf is " << sendbuf;
     // client_->handle_close(ACE_INVALID_HANDLE, 0);  // 如果服务器主动关闭，客户端将收不到这条消息
-    if(on_socket_)
+    if(nullptr != client_->get_group_())
     {
-        
-        client_->socket().send(sendbuf.c_str(), sendbuf.length());
-    }
-    else if(on_websocket_ && hub_state_->get_hub_state_() == kOnWebSocket)
-    {
-        on_websocket_state_->SendText(sendbuf);
+        client_->get_group_()->BroadcastMessage(sendbuf);
     }
 }
 
 std::string ProtocolHub::SerializeResult(bool finish) 
 {
-    PLOG(INFO) << "正在序列化解析结果...\n";
+    //PLOG(INFO) << "正在序列化解析结果...\n";
     json::array nbest;
     for (const DecodeResult& path : decoder_->result()) {
         json::object jpath({{"sentence", path.sentence}});

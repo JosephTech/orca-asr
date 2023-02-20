@@ -11,6 +11,7 @@ add_library(ace_socket STATIC
   on_http_request.cc
   group.cc
   base64.cc
+  wait_end_thread.cc
 )
 
 target_link_libraries(ace_socket PUBLIC decoder ACE crypto)

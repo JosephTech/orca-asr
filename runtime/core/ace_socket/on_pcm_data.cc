@@ -21,10 +21,10 @@ void OnPcmData::Execute(const std::string& buffer)
         std::string signal;
         signal.push_back(buffer[0]);
 
-        PLOG(INFO) << "uuid is " << uuid;
-        PLOG(INFO) << "signal is " << signal;
         if(uuid == protocol_hub_->get_client_()->get_uuid_())
         {
+            PLOG(INFO) << "uuid is " << uuid;
+            PLOG(INFO) << "signal is " << signal;
             if (signal == "e")
             {
                 PLOG(INFO) << "OnPcmData::Execute() socket结束录音,向decoder发送停止信号, 发送等待解码完成，发送result到客户端\n";
@@ -36,12 +36,7 @@ void OnPcmData::Execute(const std::string& buffer)
             else if(signal == "o")
             {
                 // on microphone. Grab the microphone.
-                int ret = protocol_hub_->get_client_()->get_group_()->set_current_on_microphone_(protocol_hub_->get_client_());
-                if(-1 == ret)
-                {
-                    PLOG(ERROR) << "program logic error. client not in group. close socket stream.";
-                    protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
-                }
+                protocol_hub_->get_client_()->get_group_()->SetGroupLeader(protocol_hub_->get_client_());
             }
         }
         
@@ -54,9 +49,9 @@ void OnPcmData::Execute(const std::string& buffer)
     // only one possible.
     if (protocol_hub_->is_on_websocket_() ^ protocol_hub_->is_on_socket_())
     {
-        if(protocol_hub_->get_client_() != protocol_hub_->get_client_()->get_group_()->get_current_on_microphone_())
+        if(!protocol_hub_->is_group_leader_())
         {
-            // only the client on microphone can talk.
+            // only group leader can talk.
             return;
         }
         // socket/websocket pcm, pure pcm.

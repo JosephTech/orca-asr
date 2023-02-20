@@ -5,13 +5,9 @@
 
 namespace wenet{
 
-Participant::~Participant(){
-        if(hub_) delete hub_;
-    }
-
 int Participant::open()
 {
-    hub_ = new ProtocolHub(this, feature_config_, decode_config_, decode_resource_);
+    hub_ = std::make_shared<ProtocolHub>(this, feature_config_, decode_config_, decode_resource_);
     // ACE_DEBUG((LM_DEBUG, ACE_TEXT("Participant::open() feature_config_ use_count%d.\n"), feature_config_.use_count()));
     // ACE_DEBUG((LM_DEBUG, ACE_TEXT("Participant::open() feature_config_ decode_config_%d.\n"), feature_config_.use_count()));
     // ACE_DEBUG((LM_DEBUG, ACE_TEXT("Participant::open() feature_config_ decode_resource_%d.\n"), feature_config_.use_count()));
@@ -132,40 +128,41 @@ int Participant::handle_input(ACE_HANDLE handle)
 // }
 int Participant::handle_close(ACE_HANDLE handle, ACE_Reactor_Mask close_mask)
 {
-    PLOG(INFO) << "需要将自己从Group里边移除，将Group从GroupManager里移除";
     ACE_DEBUG((LM_DEBUG, ACE_TEXT("Participant::handle_close()被调用..\n")));
+    // Blocking prevention
+    if (!decode_thread_finish_)
+    {
+        if(hub_)
+        {
+            hub_->HandleClose();
+        }
+        WaitEndThread::Instance().Add(this);
+        return 0;
+    }
 
     // SavePcmFile();
     // const std::string pcm_data= hub_.get_all_pcm_data_();
     // hub_.get_recorder_().SavePcmFile(pcm_data);
-    
-    PLOG(INFO) << "对端关闭，join等待解码结果，坚决不能让程序崩溃";
-    if (hub_)
-    {
-        PLOG(INFO) << "发送结束信号";
-        PLOG(INFO) << "可能已经发送过了";
-        // hub_->OnSpeechEnd();
-        if(hub_ && hub_->get_hub_state_()->get_hub_state_() == kOnPcmData)
-        {
-            PLOG(INFO) << "对端突然关闭";
-            hub_->HandleClose();
-        }
-        if(hub_->get_decode_thread_())
-        {
-            hub_->get_decode_thread_()->join();
-        }
-    }
+    ACE_DEBUG((LM_DEBUG, ACE_TEXT("handle_close()这里阻塞，导致收不到事件LeaveGroup..\n")));
     GroupManager::Instance().LeaveGroup(uuid_, this);
-    // if(hub_ && hub_->get_record_pcm_()) hub_->SavePcmFile();
+
+    // hub_->OnSpeechEnd();
+    PLOG(INFO) << "对端突然关闭,join等待解码结果";
+    if(hub_ && hub_->get_decode_thread_())
+    {
+        ACE_DEBUG((LM_DEBUG, ACE_TEXT("handle_close()这里阻塞，导致收不到事件,join 线程..\n")));
+        hub_->get_decode_thread_()->join();
+    }
+    
     if(sock_.get_handle() != ACE_INVALID_HANDLE)
     {
         // remove all events, close stream, delete this pointer
         ACE_Reactor_Mask m = ACE_Event_Handler::READ_MASK | ACE_Event_Handler::DONT_CALL;
         reactor()->remove_handler(this, m);
         sock_.close();
-        delete hub_;
         delete this;
     }
+    ACE_DEBUG((LM_DEBUG, ACE_TEXT("handle_close()这里阻塞，导致收不到事件..\n")));
     return 0;
 }
 
