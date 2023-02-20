@@ -9,7 +9,7 @@
 
 
 ## Introduction
-Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support tcp long connection of clients, and the support of http protocol and websocket protocol is realized, compatible with wenet websocket protocol.
+Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support tcp long connection of clients, and the support of HTTP protocol and WebSocket protocol is realized, compatible with wenet websocket protocol.
 
 ## Class Diagram
 
@@ -17,7 +17,7 @@ Orca ASR provides open source, full stack, speech recognition solutions. It supp
 
 
 ## Features
-1. Pure c++ server to ensure that the server can run with high performance and stability.
+1. Pure C++ server to ensure that the server can run with high performance and stability.
 2. Carefully designed to achieve high concurrency and non-blocking server.
 3. Designed simple network protocol to support client TCP long connection.
 4. The support for our own protocol, http protocol and websocket protocol is realized by using state design pattern. With only one server deployed, multiple types of clients highly concurrent/non-blocking connections can be supported.
@@ -80,10 +80,10 @@ Web is a slightly modified version of WeNet.
 ![class image](https://github.com/JosephTech/orca-asr/blob/main/images/class_diagram.bmp)
 
 ## 特点
-1. 纯粹的c++服务器，确保服务器可以高性能稳定运行。
+1. 纯粹的C++服务器，确保服务器可以高性能稳定运行。
 2. 精心设计实现了高并发和非阻塞服务器。
 3. 设计简洁的网络协议,支持客户端TCP长连接.
-4. 采用状态设计模式实现了对自有协议，http协议和websocket协议的支持。只需部署一个服务器，即可支持多种客户端高并发/非阻塞连接。
+4. 采用状态设计模式实现了对自有协议，HTTP协议和WebSocket协议的支持。只需部署一个服务器，即可支持多种客户端高并发/非阻塞连接。
 5. Group功能支持一个客户端输入语音，多客户端同步显示识别结果。适用于大型会议录音笔收音效果不佳，听障人士网络会议，电脑没有麦克风等场景。
 
 ## 本地构建运行
