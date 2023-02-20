@@ -41,14 +41,16 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
     --model_path $model_dir/final.zip \
     --unit_path $model_dir/units.txt 2>&1 | tee server.log
 ```
+## Client
+![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
+
+## Web
+
 
 ## Release
 
 
-## Client
 
-
-## Web
 
 
 ## TODOs
@@ -97,6 +99,8 @@ At present, this project relies on WeNet speech recognition engine. Entering thi
     --unit_path $model_dir/units.txt 2>&1 | tee server.log
 ```
 ## 客户端
+
+![client_demo](https://github.com/JosephTech/orca-asr/blob/main/images/client_demo.gif)
 
 ## Web端
 
