@@ -65,7 +65,6 @@ Web is a slightly modified version of WeNet.
 3. Become the metaverse NPC server and the robot question answering system server.
 4. The virtual and the real meet in this way.
 
-## License
 
 
 
@@ -76,7 +75,9 @@ Web is a slightly modified version of WeNet.
 ## 介绍
 虎鲸ASR提供了开源的，全栈的，语音识别解决方案。它支持服务端模型部署，提供客户端示例程序。采用ACE网络中间件和wenet语音识别引擎，基于Reactor网络模式实现了高并发服务器架构。设计了简洁的网络协议以支持客户端tcp长连接，同时实现了对http协议和websocket协议的支持，兼容WeNet websocket协议。
 
-## 类图
+## 类图  
+
+![class image](https://github.com/JosephTech/orca-asr/blob/main/images/class_diagram.bmp)
 
 ## 特点
 1. 纯粹的c++服务器，确保服务器可以高性能稳定运行。
