@@ -3,7 +3,7 @@
 import pyaudio
 import _thread
 import socket
-import time
+import yaml
 import tkinter as tk
 from recorder import recorder
 from tkinter import NORMAL, DISABLED
@@ -11,6 +11,13 @@ import tkinter.messagebox
 from PIL import ImageTk, Image
 from typing import Callable
 
+yamlPath = "./config.yaml"
+
+f = open(yamlPath, 'r', encoding='utf-8')
+# 字符串
+cfg = f.read()
+# 字典
+configs = yaml.load(cfg, Loader = yaml.FullLoader)
 
 CHANNELS = 1
 RATE = 16000
@@ -18,8 +25,9 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 RECORDER_SECONDS = 180
 
-IP = "192.168.2.123"
-PORT = 10010
+IP = configs["IP"]
+PORT = int(configs["PORT"])
+print(IP, " ", PORT)
 
 class BaseFace(object):
     def __init__(self, master):

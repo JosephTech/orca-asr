@@ -9,7 +9,7 @@
 
 
 ## Introduction
-Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support TCP long connection of clients, and the support of HTTP protocol and WebSocket protocol is realized, compatible with wenet websocket protocol.
+Orca ASR provides open source, full stack, speech recognition solutions. It supports server-side model deployment and provides client-side sample programs. ACE network middleware and wenet speech recognition engine are used to realize high concurrency server architecture based on Reactor network pattern. The simple network protocol is designed to support TCP long connection of clients, and the support of HTTP protocol and WebSocket protocol is realized, compatible with WeNet WebSocket ASR protocol.
 
 ## Class Diagram
 
@@ -74,7 +74,7 @@ Web is a slightly modified version of WeNet.
 
 ---
 ## 介绍
-虎鲸ASR提供了开源的，全栈的，语音识别解决方案。它支持服务端模型部署，提供客户端示例程序。采用ACE网络中间件和WeNet语音识别引擎，基于Reactor网络模式实现了高并发服务器架构。设计了简洁的网络协议以支持客户端TCP长连接，同时实现了对HTTP协议和WebSocket协议的支持，兼容WeNet 的WebSocket协议。
+虎鲸ASR提供了开源的，全栈的，语音识别解决方案。它支持服务端模型部署，提供客户端示例程序。采用ACE网络中间件和WeNet语音识别引擎，基于Reactor网络模式实现了高并发服务器架构。设计了简洁的网络协议以支持客户端TCP长连接，同时实现了对HTTP协议和WebSocket协议的支持，兼容WeNet 的WebSocket语音识别协议。
 
 ## 类图  
 
