@@ -22,6 +22,7 @@ Orca ASR provides open source, full stack, speech recognition solutions. It supp
 3. Designed simple network protocol to support client TCP long connection.
 4. The support for our own protocol, http protocol and websocket protocol is realized by using state design pattern. With only one server deployed, multiple types of clients highly concurrent/non-blocking connections can be supported.
 5. The Group function allows one client to enter a voice and multiple clients to display the recognition result synchronously. It is suitable for large meetings where the sound effect of the recorder is poor, the network meeting of the hearing impaired, and the computer has no microphone.
+6. Provides sample programs for Web and the Tkinter client.
 
 
 ## Run with Local Build
@@ -82,9 +83,10 @@ Web is a slightly modified version of WeNet.
 ## 特点
 1. 纯粹的C++服务器，确保服务器可以高性能稳定运行。
 2. 精心设计实现了高并发和非阻塞服务器。
-3. 设计简洁的网络协议,支持客户端TCP长连接.
+3. 设计简洁的网络协议,支持客户端TCP长连接。
 4. 采用状态设计模式实现了对自有协议，HTTP协议和WebSocket协议的支持。只需部署一个服务器，即可支持多种客户端高并发/非阻塞连接。
 5. Group功能支持一个客户端输入语音，多客户端同步显示识别结果。适用于大型会议录音笔收音效果不佳，听障人士网络会议，电脑没有麦克风等场景。
+6. 提供Web端和Tkinter客户端的示例程序。
 
 ## 本地构建运行
 现阶段本项目依赖于WeNet语音识别引擎，进入此分支，[wenet-ace-socket](https://github.com/JosephTech/wenet-ace-socket)，即可构建运行。
