@@ -28,10 +28,8 @@ void OnPcmData::Execute(const std::string& buffer)
             if (signal == "e")
             {
                 PLOG(INFO) << "OnPcmData::Execute() socket结束录音,向decoder发送停止信号, 发送等待解码完成，发送result到客户端\n";
-                // protocol_hub_->OnSpeechEnd();
                 protocol_hub_->HandleClose();  // 切换为wait result状态，等待对端关闭即可
                 PLOG(INFO) << "在handle_close()时候,join()线程";
-                // protocol_hub_->get_decode_thread_()->join();
             }
             else if(signal == "o")
             {

@@ -25,9 +25,6 @@ public:
     
     ~ParticipantAcceptor();
 
-    // void pass_configs(std::shared_ptr<FeaturePipelineConfig> feature_config,
-    //                     std::shared_ptr<DecodeOptions> decode_config,
-    //                     std::shared_ptr<DecodeResource> decode_resource);
     int open(const ACE_INET_Addr &listen_addr);
     int handle_input (ACE_HANDLE fd);
     int handle_close (ACE_HANDLE handle,

@@ -30,15 +30,6 @@ void OnWebSocket::Enter(const std::string& buffer)
     // 258EAFA5-E914-47DA-95CA-C5AB0DC85B11
 
     //string temp = rh.sec_websocket_key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-    //unsigned const char ibuf[] = 
-    
-    // char w_key[rh.sec_websocket_key.length()+key.length()] = rh.sec_websocket_key.c_str();
-    // const unsigned char temp[rh.sec_websocket_key.length()+key.length()] = strcat(w_key, key.c_str());
-
-    // std::vector<BYTE> myData;
-    // ...
-    // std::string encodedData = base64_encode(&myData[0], myData.size());
-    // std::vector<BYTE> decodedData = base64_decode(encodedData);
 
     char temp[128];
     
@@ -79,16 +70,11 @@ void OnWebSocket::Enter(const std::string& buffer)
         //protocol_hub_->get_client_()->handle_close(ACE_INVALID_HANDLE, 0);
         PLOG(ERROR) << "websocket response error.";
     }
-    // for(int i = 0; i < 100; ++i)
-    // {
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    // }
 }
 
 void OnWebSocket::Execute(const std::string& buf)
 {
     // all buffer is raw pcm data.
-    // pcm_processor_->Execute(buffer);
     remain_buffer_ += buf;
     //PLOG(INFO) << "TODO(Joseph): wrapping websocket code ";
     bool flag = true;

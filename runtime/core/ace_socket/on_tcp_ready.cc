@@ -26,10 +26,7 @@ void OnTcpReady::Execute(const std::string& buffer)
     // PLOG(INFO) << "uuid is " << uuid;
     // PLOG(INFO) << "signal is " << signal;
     if (signal == "s" && uuid == protocol_hub_->get_client_()->get_uuid_())
-    {
-        // ph->on_socket_ = true;
-        // ph->connection_state_ = kOnPcmData;
-        
+    {        
         PLOG(INFO) << "OnTcpReady::execute()切换为pcm_data状态";
         
         protocol_hub_->set_nbest_(int(buffer[1] - '0'));

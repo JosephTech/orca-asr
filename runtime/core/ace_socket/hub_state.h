@@ -48,15 +48,8 @@ public:
     void Execute(const std::string& buffer);
     void Exit();
     ConnectionState get_hub_state_(){return kOnFirstTimeConnect;}
-    // void PassConfigs(std::shared_ptr<FeaturePipelineConfig> feature_config,
-    //                     std::shared_ptr<DecodeOptions> decode_config,
-    //                     std::shared_ptr<DecodeResource> decode_resource);
-    // void OnSpeechStart(const std::string& config);
 private:
     ProtocolHub* protocol_hub_;
-    // std::shared_ptr<FeaturePipelineConfig> feature_config_;
-    // std::shared_ptr<DecodeOptions> decode_config_;
-    // std::shared_ptr<DecodeResource> decode_resource_;
 };
 
 

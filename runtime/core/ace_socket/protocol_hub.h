@@ -22,16 +22,6 @@
 
 
 namespace wenet{
-    
-
-
-// class ProtocolHub;  // 前置声明
-
-
-
-
-// class HubState;  // 前置声明
-// class FirstTimeConnect;
 
 class Participant;
 
@@ -49,9 +39,6 @@ public:
     Recorder& get_recorder_();
     int SavePcmFile();
 
-    
-    // void OnSpeechData(const string& buffer);
-    // void RunDecodeThread();
     void DecodeThreadFunc();
     void OnSpeechStart();
     void OnPartialResult(const std::string& result);
@@ -85,8 +72,6 @@ public:
 
     std::shared_ptr<FeaturePipeline>& get_feature_pipeline_(){return feature_pipeline_;}
     std::shared_ptr<std::thread>& get_decode_thread_(){return decode_thread_;}
-    // std::shared_ptr<DecodeResource>& get_decode_resource_(){return decode_resource_;}
-
 
 
 private:
@@ -101,8 +86,6 @@ private:
     std::string all_pcm_data_;
     Recorder recorder_;
 
-    //std::unordered_map<CommunicationState, HubState*> states_machine_;
-
     std::shared_ptr<FeaturePipelineConfig> feature_config_;
     std::shared_ptr<DecodeOptions> decode_config_;
     std::shared_ptr<DecodeResource> decode_resource_;
@@ -110,8 +93,6 @@ private:
     std::shared_ptr<FeaturePipeline> feature_pipeline_ = nullptr;
     std::shared_ptr<AsrDecoder> decoder_ = nullptr;
     std::shared_ptr<std::thread> decode_thread_ = nullptr;
-
-    // CommunicationState connection_state_ = kOnFirstTimeConnect;
 
     Participant* client_;
     HubState* hub_state_;
@@ -122,7 +103,6 @@ private:
     OnHttpRequest* on_http_request_state_;
     OnWebSocket* on_websocket_state_;
     
-    // OnHttpRequest* on_http_request_state_;
     RequestHttp request_http_;
 };
 
